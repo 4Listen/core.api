@@ -12,9 +12,9 @@ namespace Core.Api
 {
     public class CoreApiController : ControllerBase
     {
-		public ActionResult<T> FiltrarRetornoArquivo<T>(Response<T> response) where T : FileResult
+		public ActionResult<T> FilterReturnFile<T>(Response<T> response) where T : FileResult
 		{
-			if (VerificarObjetoBase(response))
+			if (CheckBaseObject(response))
 			{
 				return BadRequest();
 			}
@@ -26,27 +26,27 @@ namespace Core.Api
 				return filtrarRetornoArquivo;
 			}
 
-			return ValidarErro(response);
+			return ValidateError(response);
 		}
 
-		public ActionResult<List<T>> FiltrarRetorno<T>(Response<PagedResult<T>> response)
+		public ActionResult<List<T>> FilterReturn<T>(Response<PagedResult<T>> response)
 		{
-			if (VerificarObjetoBase(response))
+			if (CheckBaseObject(response))
 			{
 				return BadRequest();
 			}
 
 			if (response.Output != null)
 			{
-				return ClassificarOk(response);
+				return ClassifyOk(response);
 			}
 
-			return ValidarErro(response);
+			return ValidateError(response);
 		}
 
-		public ActionResult<List<T>> FiltrarRetorno<T>(Response<List<T>> response)
+		public ActionResult<List<T>> FilterReturn<T>(Response<List<T>> response)
 		{
-			if (VerificarObjetoBase(response))
+			if (CheckBaseObject(response))
 			{
 				return BadRequest();
 			}
@@ -61,20 +61,20 @@ namespace Core.Api
 				return PrepareOk(response);
 			}
 
-			return ValidarErro(response);
+			return ValidateError(response);
 		}
 
 		public ActionResult<T> FiltrarRetorno<T>(Response<T> response)
 		{
-			if (VerificarObjetoBase(response))
+			if (CheckBaseObject(response))
 			{
 				return BadRequest();
 			}
 
-			return response.Output != null ? PrepareOk(response) : ValidarErro(response);
+			return response.Output != null ? PrepareOk(response) : ValidateError(response);
 		}
 
-		private bool VerificarObjetoBase<T>(Response<T> response)
+		private bool CheckBaseObject<T>(Response<T> response)
 		{
 			if (response == null || (response.Output == null && response.Notifications == null))
 			{
@@ -84,7 +84,7 @@ namespace Core.Api
 			return false;
 		}
 
-		private ActionResult ValidarErro<T>(Response<T> response)
+		private ActionResult ValidateError<T>(Response<T> response)
 		{
 			if (response.Notifications == null || response.Notifications.Count == 0)
 			{
@@ -123,7 +123,7 @@ namespace Core.Api
 			}
 		}
 
-		private ActionResult<List<T>> ClassificarOk<T>(Response<PagedResult<T>> response)
+		private ActionResult<List<T>> ClassifyOk<T>(Response<PagedResult<T>> response)
 		{
 			if (response.Output.IsEmpty)
 			{
